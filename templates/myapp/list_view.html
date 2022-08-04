@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="album py-5">
+    <div class="container">
+      <div class="row">
+        {% if site_user_list %}
+        <table class="table" >
+        <thead class="thead-dark">
+            <th scope="col">Id</th>
+            <th scope="col">First Name </th>
+            <th scope="col">Last Name </th>
+            <th scope="col">DOB </th>
+            <th scope="col">Address Line1 </th>
+            <th scope="col">Address Line2 </th>
+            <th scope="col">City </th>
+            <th scope="col">Email </th>
+            <th scope="col">State </th>
+            <th scope="col">Pin </th>
+            <th scope="col">Action</th>
+        </thead>
+          {% for each in site_user_list %}
+               <tr>
+                <td>{{each.id}}</td>
+                <td>{{each.firstName}}</td>
+                <td>{{each.lastName}}</td>
+                <td>{{each.dob}}</td>
+                <td>{{each.addressLine1}}</td>
+                <td>{{each.addressLine2}}</td>
+                <td>{{each.city}}</td>
+                <td>{{each.email}}</td>
+                <td>{{each.state}}</td>
+                <td>{{each.pin}}</td>
+                <td>
+                  <a href="/detail/{{ each.id }}">Detail</a><br/>
+                  <a href="/edit/{{ each.id }}">Edit</a><br/>
+                  <a href="/delete/{{ each.id }}">Delete</a>
+                </td>
+                </tr>
+          {% endfor %}
+        {% else %}
+            No User Found
+        {% endif %}
+      </div>
+    </div><!-- /.row -->
+  </div>
+{% endblock %}

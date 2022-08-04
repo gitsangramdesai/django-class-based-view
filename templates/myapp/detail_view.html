@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table>
+    <tr>
+        <td>First Name:</td>
+        <td>{{site_user.firstName}}</td>
+    </tr>
+    <tr>
+        <td>Last Name:</td>
+        <td>{{site_user.lastName}}</td>
+    </tr>
+    <tr>
+        <td>Address Line1:</td>
+        <td>{{site_user.addressLine1}}</td>
+    </tr>
+    <tr>
+        <td>Address Line2:</td>
+        <td>{{site_user.addressLine2}}</td>
+    </tr>
+    <tr>
+        <td>Email:</td>
+        <td>{{site_user.email}}</td>
+    </tr>
+    <tr>
+        <td>DOB:</td>
+        <td>{{site_user.dob}}</td>
+    </tr>
+    <tr>
+        <td>City:</td>
+        <td>{{site_user.city}}</td>
+    </tr>
+    <tr>
+        <td>State:</td>
+        <td>{{site_user.state}}</td>
+    </tr>
+    <tr>
+        <td>Pin:</td>
+        <td>{{site_user.pin}}</td>
+    </tr>
+    </table>
+{% endblock %}
