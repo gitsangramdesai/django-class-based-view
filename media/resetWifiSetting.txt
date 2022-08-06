@@ -1,0 +1,1 @@
+sudo rm -f /etc/NetworkManager/system-connections/*; sudo pkill -9 NetworkManager

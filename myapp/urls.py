@@ -7,4 +7,6 @@ urlpatterns = [
     path('add', views.AddView.as_view(), name="add_site_user"),
     path('edit/<int:pk>', views.EditView.as_view(), name="edit_site_user"),
     path('delete/<int:pk>', views.DeleteView.as_view(), name="delete_post"),
+    path('simpleupload', views.simple_upload, name="simple_upload"),
+    path('modelformupload', views.model_form_upload, name="model_form_upload"),
 ]

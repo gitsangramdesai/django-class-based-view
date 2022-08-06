@@ -31,9 +31,12 @@
                 <td>{{each.state}}</td>
                 <td>{{each.pin}}</td>
                 <td>
-                  <a href="/detail/{{ each.id }}">Detail</a><br/>
-                  <a href="/edit/{{ each.id }}">Edit</a><br/>
-                  <a href="/delete/{{ each.id }}">Delete</a>
+                  <a href="/myapp/detail/{{ each.id }}" class="btn btn-info" role="button">Detail</a><br/>
+                  <a href="/myapp/edit/{{ each.id }}" class="btn btn-info" role="button">Edit</a><br/>
+                  <form method="POST" action="/myapp/delete/{{each.id}}">
+                    {% csrf_token %}
+                    <input type="submit"class="btn btn-info"  value="DELETE">
+                 </form>
                 </td>
                 </tr>
           {% endfor %}
@@ -44,3 +47,4 @@
     </div><!-- /.row -->
   </div>
 {% endblock %}
+

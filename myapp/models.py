@@ -21,3 +21,10 @@ class SiteUser(models.Model):
     
     createdAt = models.DateTimeField(default=timezone.now)
     updatedAt = models.DateTimeField(default=timezone.now)
+    
+class Document(models.Model):
+    class Meta:
+        db_table = 'document'
+    description = models.CharField(max_length=255, blank=True)
+    document = models.FileField(upload_to='documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)  

@@ -1,41 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <table>
+    <table class="table-secondary">
     <tr>
-        <td>First Name:</td>
+        <td scope="col">First Name:</td>
         <td>{{site_user.firstName}}</td>
     </tr>
     <tr>
-        <td>Last Name:</td>
+        <td scope="col">Last Name:</td>
         <td>{{site_user.lastName}}</td>
     </tr>
     <tr>
-        <td>Address Line1:</td>
+        <td scope="col">Address Line1:</td>
         <td>{{site_user.addressLine1}}</td>
     </tr>
     <tr>
-        <td>Address Line2:</td>
+        <td scope="col">Address Line2:</td>
         <td>{{site_user.addressLine2}}</td>
     </tr>
     <tr>
-        <td>Email:</td>
+        <td scope="col">Email:</td>
         <td>{{site_user.email}}</td>
     </tr>
     <tr>
-        <td>DOB:</td>
+        <td scope="col">DOB:</td>
         <td>{{site_user.dob}}</td>
     </tr>
     <tr>
-        <td>City:</td>
+        <td scope="col">City:</td>
         <td>{{site_user.city}}</td>
     </tr>
     <tr>
-        <td>State:</td>
+        <td scope="col">State:</td>
         <td>{{site_user.state}}</td>
     </tr>
     <tr>
-        <td>Pin:</td>
+        <td scope="col">Pin:</td>
         <td>{{site_user.pin}}</td>
     </tr>
     </table>

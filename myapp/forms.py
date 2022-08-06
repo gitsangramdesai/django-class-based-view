@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import  SiteUser
+from .models import  SiteUser,Document
 
 class SiteUserForm(forms.ModelForm):
     options = (
@@ -33,3 +33,8 @@ class SiteUserForm(forms.ModelForm):
     class Meta:
         model = SiteUser
         fields = ['firstName', 'lastName', 'email','dob', 'addressLine1', 'addressLine2', 'state','city','pin','status','country']
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ('description', 'document', )
