@@ -1,10 +1,11 @@
 from django.shortcuts import redirect, render
-from django.views.generic import TemplateView,ListView,DetailView,CreateView,UpdateView,DeleteView
+from django.views.generic import TemplateView,ListView,DetailView,CreateView,UpdateView,DeleteView,View
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.hashers import make_password,check_password
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse,reverse_lazy
+
 
 
 from myapp.forms import SiteUserForm,DocumentForm
@@ -63,3 +64,20 @@ def model_form_upload(request):
     return render(request, 'myapp/form_upload.html', {
         'form': form
     })
+    
+class FileUploadView(View):
+    form_class = DocumentForm
+    success_url = reverse_lazy('class_file_upload')
+    template_name = 'myapp/class_upload.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(self.success_url)
+        else:
+            return render(request, self.template_name, {'form': form})    

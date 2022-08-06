@@ -9,4 +9,6 @@ urlpatterns = [
     path('delete/<int:pk>', views.DeleteView.as_view(), name="delete_post"),
     path('simpleupload', views.simple_upload, name="simple_upload"),
     path('modelformupload', views.model_form_upload, name="model_form_upload"),
+    path('classfileupload', views.FileUploadView.as_view(), name="class_file_upload"),
+    
 ]
