@@ -85,3 +85,9 @@ def siteUserByEmail(request,foo):
     print("emailId",foo)
     queryset = SiteUser.objects.filter(email=foo).values()
     return JsonResponse({"siteuser": list(queryset)})
+
+class ExtendedView(DetailView):
+    def get(self, request, *args, **kwargs):
+        foo = self.kwargs['foo']
+        queryset = SiteUser.objects.filter(email=foo).values()
+        return JsonResponse({"siteuser": list(queryset)})

@@ -11,4 +11,5 @@ urlpatterns = [
     path('modelformupload', views.model_form_upload, name="model_form_upload"),
     path('classfileupload', views.FileUploadView.as_view(), name="class_file_upload"),
     path('siteuser/<str:foo>', views.siteUserByEmail, name="site_user_list_email"),
+    path('siteusercbv/<str:foo>', views.ExtendedView.as_view(), name="site_user_list_email_cbv"),
 ]
