@@ -1,14 +1,14 @@
 import email
 from operator import itemgetter
 from django.shortcuts import redirect, render
-from django.views.generic import TemplateView,ListView,DetailView,CreateView,UpdateView,DeleteView,View
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.hashers import make_password,check_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.template import RequestContext
-from django.http import HttpResponseRedirect,HttpResponse
-from django.urls import reverse,reverse_lazy
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse, reverse_lazy
 import json
-from myapp.forms import SiteUserForm,DocumentForm
+from myapp.forms import SiteUserForm, DocumentForm
 from .models import SiteUser
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
@@ -17,35 +17,42 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
+
 class IndexView(ListView):
     model = SiteUser
-    queryset = SiteUser.objects.filter(status='active').all().order_by('-createdAt')
+    queryset = SiteUser.objects.filter(
+        status='active').all().order_by('-createdAt')
     template_name = 'myapp/list_view.html'
     context_object_name = 'site_user_list'
-    
+
+
 class DetailedView(DetailView):
     model = SiteUser
     template_name = 'myapp/detail_view.html'
     context_object_name = 'site_user'
-    
+
+
 class AddView(CreateView):
     model = SiteUser
     form_class = SiteUserForm
     template_name = 'myapp/add_view.html'
     success_url = '/myapp/'
-    
+
+
 class EditView(UpdateView):
     model = SiteUser
     form_class = SiteUserForm
     pk_url_kwarg = 'pk'
     template_name = 'myapp/edit_view.html'
     success_url = '/myapp'
-    
+
+
 class DeleteView(DeleteView):
     model = SiteUser
     pk_url_kwarg = 'pk'
     template_name = 'myapp/delete_view.html'
     success_url = '/myapp/'
+
 
 def simple_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:
@@ -58,6 +65,7 @@ def simple_upload(request):
         })
     return render(request, 'myapp/simple_upload.html')
 
+
 def model_form_upload(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
@@ -69,7 +77,8 @@ def model_form_upload(request):
     return render(request, 'myapp/form_upload.html', {
         'form': form
     })
-    
+
+
 class FileUploadView(View):
     form_class = DocumentForm
     success_url = reverse_lazy('class_file_upload')
@@ -85,12 +94,14 @@ class FileUploadView(View):
             form.save()
             return redirect(self.success_url)
         else:
-            return render(request, self.template_name, {'form': form})    
-        
-def siteUserByEmail(request,foo):        
-    print("emailId",foo)
+            return render(request, self.template_name, {'form': form})
+
+
+def siteUserByEmail(request, foo):
+    print("emailId", foo)
     queryset = SiteUser.objects.filter(email=foo).values()
     return JsonResponse({"siteuser": list(queryset)})
+
 
 class ExtendedView(DetailView):
     def get(self, request, *args, **kwargs):
@@ -98,22 +109,23 @@ class ExtendedView(DetailView):
         queryset = SiteUser.objects.filter(email=foo).values()
         return JsonResponse({"siteuser": list(queryset)})
 
-@method_decorator(csrf_exempt, name='dispatch')   
-class SiteUserUpdate(View): 
+
+@method_decorator(csrf_exempt, name='dispatch')
+class SiteUserUpdate(View):
     def patch(self, request, item_id):
-            print("item_id",item_id);
+            print("item_id", item_id);
             data = json.loads(request.body.decode("utf-8"))
             item = SiteUser.objects.get(id=item_id)
             item.firstName = data['firstName']
-            print("data['firstName']",data['firstName']);
+            print("data['firstName']", data['firstName']);
             item.save()
 
             data = {
                 'message': f'Item {item_id} has been updated'
             }
 
-            return JsonResponse(data)    
-        
+            return JsonResponse(data)
+
     def delete(self, request, item_id):
         item = SiteUser.objects.get(id=item_id)
         item.delete()
@@ -122,7 +134,7 @@ class SiteUserUpdate(View):
             'message': f'Item {item_id} has been deleted'
         }
         return JsonResponse(data)
-    
+
     def get(self, request):
         items_count = SiteUser.objects.count()
         items = SiteUser.objects.all()
@@ -141,12 +153,12 @@ class SiteUserUpdate(View):
         }
 
         return JsonResponse(data)
-    
+
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
         firstName = data.get('firstName')
         lastName = data.get('lastName')
-        email = data.get('email')
+        emailId = data.get('email')
         dob = data.get('dob')
         status = data.get('status')
         city = data.get('city')
@@ -156,22 +168,31 @@ class SiteUserUpdate(View):
         addressLine1 = data.get('addressLine1')
         addressLine2 = data.get('addressLine2')
 
-        print(email)        
-        
         try:
-            isValidEmail = validate_email(email)
+            isValidEmail = validate_email(emailId)
         except ValidationError:
             print("ValidationError")
             data={
                 "status":"failure",
                 "message":"Enter Valid Email Address"
             }
-            return JsonResponse(data, status=401)            
+            return JsonResponse(data, status=422)     
+        
+        
+        queryset = SiteUser.objects.filter(email=emailId).count()
+        if queryset > 0:
+            data = {
+                "status": "failure",
+                "message": "email address already exist"
+            }
+            return JsonResponse(data, status=422)                  
 
+
+        
         site_user_data = {
             'firstName': firstName,
             'lastName': lastName,
-            'email': email,
+            'email': emailId,
             "addressLine1":addressLine1,
             "addressLine2":addressLine2,
             "status":status,
@@ -187,4 +208,4 @@ class SiteUserUpdate(View):
         data = {
             "message": f"New item added to Site User with id: {item.id}"
         }
-        return JsonResponse(data, status=422)
+        return JsonResponse(data, status=201)
