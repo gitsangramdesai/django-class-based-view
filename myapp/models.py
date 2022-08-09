@@ -1,8 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-# Create your models here.
-
+    
 class SiteUser(models.Model):
     class Meta:
         db_table = 'siteuser'
@@ -11,7 +10,9 @@ class SiteUser(models.Model):
     lastName = models.CharField(max_length=150)
     addressLine1 =models.CharField(max_length=500)
     addressLine2 =models.CharField(max_length=500)
-    email = models.EmailField(max_length = 255)
+    
+    email = models.EmailField(max_length=255, blank=False, unique=True)
+                              
     dob =models.DateField()
     city = models.CharField(max_length = 150)
     state = models.CharField(max_length = 150)

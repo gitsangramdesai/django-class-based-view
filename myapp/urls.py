@@ -12,4 +12,6 @@ urlpatterns = [
     path('classfileupload', views.FileUploadView.as_view(), name="class_file_upload"),
     path('siteuser/<str:foo>', views.siteUserByEmail, name="site_user_list_email"),
     path('siteusercbv/<str:foo>', views.ExtendedView.as_view(), name="site_user_list_email_cbv"),
+    path('updatefirstname/<int:item_id>', views.SiteUserUpdate.as_view(), name="patch_first_name"),
+    path('listsiteuser', views.SiteUserUpdate.as_view(), name="list_site_user "),
 ]
