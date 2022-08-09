@@ -3,14 +3,13 @@ from django.views.generic import TemplateView,ListView,DetailView,CreateView,Upd
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.hashers import make_password,check_password
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.urls import reverse,reverse_lazy
-
-
-
+import json
 from myapp.forms import SiteUserForm,DocumentForm
 from .models import SiteUser
 from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
 
 class IndexView(ListView):
     model = SiteUser
@@ -81,3 +80,8 @@ class FileUploadView(View):
             return redirect(self.success_url)
         else:
             return render(request, self.template_name, {'form': form})    
+        
+def siteUserByEmail(request,foo):        
+    print("emailId",foo)
+    queryset = SiteUser.objects.filter(email=foo).values()
+    return JsonResponse({"siteuser": list(queryset)})
